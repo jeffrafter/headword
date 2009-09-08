@@ -1,0 +1,80 @@
+Before you can use Headword you are going to need a few things, most importantly the headword gem:
+
+<pre>
+<code>
+  sudo gem install jeffrafter-headword --source=http://gems.github.com
+</code>
+</pre>
+
+By default this should install the rsl-stringex gem which handles the url formatting. If you want to run the spreadhead-specific tests, you will need Thoughtbot's shoulda and factory_girl. Once you have all of the requisite gems, you need to configure your Rails application to use the gem. You can do this by adding a config.gem statement to your environment.rb (or to a specific environment). For example:
+
+<pre>
+<code>
+  Rails::Initializer.run do |config|
+    # Specify gems that this application depends on and have them installed with 
+    # rake gems:install
+    config.gem "jeffrafter-headword",
+      :lib     => 'headword',
+      :source  => 'http://gems.github.com'
+
+    # Skip frameworks you're not going to use. To use Rails without a database,
+    # you must remove the Active Record framework.
+    config.frameworks -= [ :active_resource ]
+
+    # Set Time.zone default to the specified zone and make Active Record 
+    # auto-convert to this zone. Run "rake -D time" for a list of tasks for 
+    # finding time zone names.
+    config.time_zone = 'UTC'
+  end
+</code>
+</pre>
+
+After you have done this, you can use the headword generator from the console (while in the rails root).
+
+<pre>
+<code>
+  script/generate headword
+</code>
+</pre>
+
+This will create (or update) a migration for the users table for the url attribute. Additionally, it will create a User model in your app/models folder (if it does not exist). The model must have include statement to bring in all of the base functionality. This is all you need to get started, you should be able to run the migration and restart your application. 
+
+h2. What do I get?
+
+By default you will have a "/:username" route. Additionally any time a user name is changed headword will automatically generate a new url. If there is a conflict it will add "-1" to the end (or "-2" and so on).
+
+You don't get any editing. You will want to add a username field to your user editing form:
+
+<pre>
+<code>
+<div class="text_field">
+  <%= form.label :username %>
+  <%= form.text_field :username %>
+</div>
+</code>
+</pre>
+
+h2. Wait a second, I am using a Clearance, this works with Clearance right?
+
+Yup. In fact, that's the point. But, there are a couple more things you need to do. In order to modify the views that come with clearance, you need to override the UserController. To do this you need to add add the following to @app/controllers/user_controller.rb@:
+
+<pre>
+<code>
+class UsersController < Clearance::UsersController  
+end
+</code>
+</pre>
+
+And you need to modify your routes:
+
+<pre>
+<code>
+  # Add this to the top
+  map.resources :users
+</code>
+</pre>
+
+h2. Hey my routes aren't working
+
+Maybe you have some fancy routes already, maybe something using a glob? Maybe you are using another engine? The only way to really manage these things are to carefully specify the order that the engines are included. 
+

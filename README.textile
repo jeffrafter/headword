@@ -1,0 +1,63 @@
+h1. Headword
+
+Rails user name routes for vain users.
+
+h2. Installation
+
+Headword is a Rails engine. It works with versions of Rails greater than 2.3.
+
+In config/environment.rb:
+
+<pre>
+config.gem "jeffrafter-headword",
+  :lib     => 'headword',
+  :source  => 'http://gems.github.com'
+</pre>
+
+We recommend you don't vendor the gem:
+
+Make sure the development database exists and run the generator:
+
+<pre>
+script/generate headword
+</pre>
+
+A number of files will be created and instructions will be printed.
+
+You may already have some of these files. Don't worry. You'll be asked if you want to overwrite them.
+
+Run the migration:
+
+<pre>
+rake db:migrate
+</pre>
+
+h2. Routes
+
+Headword installs a default catch-all route for single words (e.g., /jeffrafter). These are given the lowest priority in your application. If your application is already catching these routes then you may not be able to access your headword based user pages.
+
+h2. Tutorial
+
+Checkout the "tutorial":http://wiki.github.com/jeffrafter/headword/tutorial.
+
+h2. Authors
+
+Headword is based on Spreadhead.
+
+The engine implementation and gem was patterned after the Clearance gem by Thoughtbot.
+
+h2. Suggestions, Bugs, Refactoring?
+
+Fork away and create a "Github Issue":http://github.com/jeffrafter/headword/issues. Please send pull requests.
+
+When you do: 
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a future version unintentionally.
+* Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+h2. Documentation
+
+Documentation is available at "http://rdoc.info/projects/jeffrafter/headword":http://rdoc.info/jeffrafter/headword
